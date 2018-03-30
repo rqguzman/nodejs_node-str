@@ -2,26 +2,11 @@
 
 const express = require('express');
 const router = express.Router(); // ARQUIVO DE ROTAS
+const controller = require('../controller/product-controller');
 
 //ROTAS
-router.post('/', (req, res, next) => {
-    res.status(201).send(req.body);
-});
-
-router.put('/:id', (req, res, next) => {
-    const id = req.params.id;
-    res.status(200).send({
-        id: id,
-        item: req.body
-    });
-});
-
-router.delete('/:id', (req, res, next) => {
-    const id = req.params.id;
-    res.status(200).send({
-        id: id,
-        item: req.body
-    });
-});
+router.post('/', controller.post);
+router.put('/:id', controller.put);
+router.delete('/', controller.delete);
 
 module.exports = router;
