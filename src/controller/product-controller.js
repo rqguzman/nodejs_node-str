@@ -16,4 +16,3 @@ exports.delete = ('/', (req, res, next) => {
     const id = req.params.id;
     res.status(200).send(req.body);
 });
-
