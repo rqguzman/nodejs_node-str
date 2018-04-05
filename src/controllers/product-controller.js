@@ -64,12 +64,9 @@ exports.getByTag = (req, res, next) => {
 
 exports.post = ('/', (req, res, next) => {
     var product = new Product(req.body);
-    // product.title = req.body.title; 
-    // product.slug = req.body.slug;
-    // product.description = req.body.description; 
-    // product.price = req.body.price;
-    // product.active = req.body.active;
-    // product.tags = req.body.tags;
+    // product.title = req.body.title; product.slug = req.body.slug;
+    // product.description = req.body.description; product.price = req.body.price;
+    // product.active = req.body.active; product.tags = req.body.tags;
     product
         .save()
         .then(x => {
@@ -84,12 +81,27 @@ exports.post = ('/', (req, res, next) => {
         });
 });
 
-exports.put = ('/', (req, res, next) => {
-    const id = req.params.id;
-    res
-        .status(200)
-        .send({id: id, item: req.body});
-});
+exports.put = (req, res, next) => {
+    Product
+        .findByIdAndUpdate(req.params.id, {
+        $set: {
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price,
+            slug: req.body.slug
+        }
+    })
+        .then(x => {
+            res
+                .status(200)
+                .send({message: 'Produto alterado com sucesso!'});
+        })
+        .catch(error => {
+            res
+                .status(400)
+                .send({message: 'Falha ao alterar o produto.', data: error});
+        });
+};
 
 exports.delete = ('/', (req, res, next) => {
     res
