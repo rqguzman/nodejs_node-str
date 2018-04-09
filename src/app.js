@@ -13,6 +13,8 @@ mongoose.connect(strgConnection);
 
 // Carregando os Models
 const Product = require('./models/product');
+const Costumer = require('./models/costumer');
+const Order = require('./models/order');
 
 // Carregando as rotas
 const indexRoutes = require('./routes/index-routes');
