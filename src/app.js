@@ -3,13 +3,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const config = require('./config');
 
 const app = express();
 const router = express.Router(); // ARQUIVO DE ROTAS
 
 // Conectando ao DB
-const strgConnection = 'mongodb://rqguzman:10312556Hq@ds231589.mlab.com:31589/ndstr_guz';
-mongoose.connect(strgConnection);
+mongoose.connect(config.connectionString);
 
 // Carregando os Models
 const Product = require('./models/product');
@@ -20,6 +20,7 @@ const Order = require('./models/order');
 const indexRoutes = require('./routes/index-routes');
 const productRoutes = require('./routes/product-routes');
 const customerRoutes = require('./routes/customer-routes');
+const orderRoutes = require('./routes/order-routes');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -29,5 +30,6 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use('/', indexRoutes);
 app.use('/products', productRoutes);
 app.use('/customers', customerRoutes);
+app.use('/orders', orderRoutes);
 
 module.exports = app;
