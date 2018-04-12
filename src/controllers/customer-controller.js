@@ -5,6 +5,8 @@ const ValidationContract = require('../validators/fluent-validator');
 const repository = require('../repositories/customer-repository');
 const md5 = require('md5');
 
+const emailService = require('../services/email-service');
+
 exports.get = async(req, res, next) => {
     try {
         var data = await repository.get();
@@ -41,6 +43,13 @@ exports.post = async(req, res, next) => {
             email: req.body.email,
             password: md5(req.body.password + global.SALT_KEY)
         });
+
+        emailService.send(
+            req.body.email,
+            'Bem vindo a Node Store',
+            global.EMAIL_TMPL.replace('{0}', req.body.name)
+        );
+
         res
             .status(201)
             .send({message: 'Cliente cadastrado com sucesso!'});
