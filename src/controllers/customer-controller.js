@@ -3,6 +3,7 @@
 
 const ValidationContract = require('../validators/fluent-validator');
 const repository = require('../repositories/customer-repository');
+const authService = require('../services/auth-service');
 const md5 = require('md5');
 
 const emailService = require('../services/email-service');
@@ -84,5 +85,39 @@ exports.delete = async(req, res, next) => {
         res
             .status(400)
             .send({message: 'Falha ao remover o cliente.', data: error});
+    }
+};
+
+exports.authenticate = async(req, res, next) => {
+
+    try {
+        const customer = await repository.authenticate({
+            email: req.body.email,
+            password: md5(req.body.password + global.SALT_KEY)
+        });
+
+        if(!customer) {
+            res.status(404).send({message: 'Usuário ou senha inválidos'});
+            return;
+        }
+
+        const token = await authService.generateToken({
+            email: customer.email, 
+            name: customer.name
+        });
+
+        res
+            .status(201)
+            .send({
+                token: token,
+                data: {
+                    email: customer.email, 
+                    name: customer.name
+                }
+            });
+    } catch (error) {
+        res
+            .status(400)
+            .send({message: 'Falha ao autenticar o cliente.'});
     }
 };

@@ -14,17 +14,23 @@ exports.create = async(data) => {
 }
 
 exports.update = async(id, body) => {
-    await Customer
-        .findByIdAndUpdate(id, {
-            $set: {
-                name: body.name,
-                email: body.email,
-                password: body.password
-            }
-        });
+    await Customer.findByIdAndUpdate(id, {
+        $set: {
+            name: body.name,
+            email: body.email,
+            password: body.password
+        }
+    });
 }
 
 exports.delete = async(id) => {
-    await Customer
-        .findOneAndRemove(id);
+    await Customer.findOneAndRemove(id);
+}
+
+exports.authenticate = async(data) => {
+    let res = await Customer.findOne({
+        email: data.email, 
+        password: data.password
+    });
+    return res;
 }
