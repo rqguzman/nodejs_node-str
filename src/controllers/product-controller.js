@@ -77,7 +77,7 @@ exports.post = async(req, res, next) => {
     }
 
     try {
-        //Cria o blob Service
+        // //Cria o blob Service
         const blobSvc = azure.createBlobService(config.containerConnectionString);
 
         let filename = guid.raw().toString() + '.jpg';
